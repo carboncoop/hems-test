@@ -15,7 +15,7 @@ We're using the excellent [Balena-homeassistant](https://github.com/balena-io-ex
 * **InfluxDB** - we'd like to move from our current 1.8 setup to 2.0+. Very interested in the edge replication functionality to influxcloud, which brings the advantage of automated gathering of device load information, feed loss tracking and local caching (for later replication). There are again some interesting examples of this on balena hub which we might use a basis - for example [balenaAir](https://github.com/balenair/balenair), which benefits from webinars and walkthroughs from influx & balena. This would remove the need for us to run Telegraf.
 * **COFYbox config** - there are a variety of tasks fulfilled by this application, the primary is the creation of an access point for device connection - this can now be acheived via [balena Wifi-Repeater](https://github.com/balena-labs-projects/wifi-repeater), as yet it's unclear if all the additional functions can be dealt with via edge replication.
 * **Glue** - retired in favour of packaging system.
-**cofycloud-api-pull** - Likely that COFYcloud won't be available after project end - retired in favour of more granular OpenADR signals.
+* **cofycloud-api-pull** - Likely that COFYcloud won't be available after project end - retired in favour of more granular OpenADR signals.
 * **Telegraf** - Potentially retired in favour of edge replication for aggregation.
 
 
