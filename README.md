@@ -7,7 +7,7 @@ The current HEMS system developed as part of OpenADR and later REScoop VPP was f
 We're using the excellent [Balena-homeassistant](https://github.com/balena-io-experimental/balena-homeassistant) project as a basis for these components. 
 
 * [**Home Assistant**](https://www.home-assistant.io/) tracks the latest release, the /config directory is configured as a persistent volume.
-* **Congigurator** - mirrors the existing setup on our current HEMS (though without the now redundant link to the glue config) - need to add security - via [Environment variables]([environment variable](https://www.balena.io/docs/learn/manage/variables/)) see: https://github.com/danielperna84/hass-configurator/wiki/Configuration
+* **Configurator** - mirrors the existing setup on our current HEMS (though without the now redundant link to the glue config) - need to add security - via [Environment variables]([environment variable](https://www.balena.io/docs/learn/manage/variables/)) see: https://github.com/danielperna84/hass-configurator/wiki/Configuration
 * **MQTT** - As current HEMS
 
 # Missing elements from existing HEMS
