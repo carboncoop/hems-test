@@ -1,6 +1,6 @@
 # Refactoring our HEMS to better match upstream projects
 
-The current HEMS system developed as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity.
+The current HEMS system developed as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity.
 
 # Home Assistant, Configurator and MQTT
 
