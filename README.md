@@ -1,10 +1,10 @@
 # Refactoring our HEMS to better match upstream projects
 
-The current HEMS system developed as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity.
+The current HEMS system developed as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity, in-line with our strategy day discussions.
 
 # Home Assistant, Configurator and MQTT
 
-The repo is currently a clone of the excellent [Balena-homeassistant](https://github.com/balena-io-experimental/balena-homeassistant) project which is what we are using for the Area Based Scheme test system, it is working well but lacking some key functionality we have in the current COFYbox. Below are the included services.
+This repo is currently a clone of the excellent [Balena-homeassistant](https://github.com/balena-io-experimental/balena-homeassistant) project which is what we are using for the Area Based Scheme test system and seems a good base to start from. It is working well as is but is lacking some key functionality we have in the current COFYbox. Below are the included services.
 
 * [**Home Assistant**](https://www.home-assistant.io/) tracks the latest release, the /config directory is configured as a persistent volume.
 * **Configurator** - mirrors the existing setup on our current HEMS (though without the now redundant link to the glue config) - need to add security (lacking in current COFYbox) - via [Environment variables]([environment variable](https://www.balena.io/docs/learn/manage/variables/)) see: https://github.com/danielperna84/hass-configurator/wiki/Configuration
