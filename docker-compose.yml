@@ -28,6 +28,9 @@ services:
     volumes:
       - 'config:/config'
     restart: always
+    networks:
+      cofyboxnet:
+        ipv4_address: 172.18.4.2
 
   mqtt:
     build: mqtt
@@ -53,3 +56,14 @@ services:
       - influxdb-data:/var/lib/influxdb2
     ports:
       - "8086:8086"
+    networks:
+      cofyboxnet:
+        ipv4_address: 172.18.4.3
+
+networks:
+  cofyboxnet:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.4.0/24
+         gateway: 172.18.4.1
