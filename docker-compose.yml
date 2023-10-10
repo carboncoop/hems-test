@@ -1,9 +1,13 @@
 version: '2'
+
 volumes:
     config:
     mosquitto:
-    sense-data:  
+    sense-data:
+    influxdb-data:
+
 services:
+
   wifi-connect:
     image: balenablocks/wifi-connect:armv7hf
     restart: always
@@ -15,6 +19,7 @@ services:
     environment:
       PORTAL_LISTENING_PORT: 8080
       ACTIVITY_TIMEOUT: 120
+
   homeassistant:
     build: homeassistant
     ports:
@@ -23,6 +28,7 @@ services:
     volumes:
       - 'config:/config'
     restart: always
+
   mqtt:
     build: mqtt
     ports:
@@ -30,6 +36,7 @@ services:
     restart: always
     volumes:
       - mosquitto:/mosquitto/data
+
   hass-configurator:
     image: "causticlab/hass-configurator-docker:latest"
     restart: always
@@ -39,3 +46,10 @@ services:
       - 'config:/hass-config'
     environment:
       - HC_BASEPATH=/hass-config
+
+  influxdb:
+    build: influxdb
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
