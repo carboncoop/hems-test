@@ -45,7 +45,7 @@ services:
     ports:
       - "3218:3218"
     volumes:
-      - 'config:/hass-config'
+      - 'hass-config:/hass-config'
     environment:
       - HC_BASEPATH=/hass-config
 
