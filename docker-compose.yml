@@ -1,9 +1,8 @@
 version: '2'
 
 volumes:
-    config:
+    hass-config:
     mosquitto:
-    sense-data:
     influxdb-data:
 
 services:
@@ -21,19 +20,19 @@ services:
       ACTIVITY_TIMEOUT: 120
 
   homeassistant:
-    build: homeassistant
+    build: ./services/homeassistant
     ports:
       - 80:8123
     privileged: true
     volumes:
-      - 'config:/config'
+      - 'hass-config:/config'
     restart: always
     networks:
-      cofyboxnet:
+      hems:
         ipv4_address: 172.18.4.2
 
   mqtt:
-    build: mqtt
+    build: ./services/mqtt
     ports:
       - "1883:1883"
     restart: always
@@ -51,17 +50,17 @@ services:
       - HC_BASEPATH=/hass-config
 
   influxdb:
-    build: influxdb
+    build: ./services/influxdb
     volumes:
       - influxdb-data:/var/lib/influxdb2
     ports:
       - "8086:8086"
     networks:
-      cofyboxnet:
+      hems:
         ipv4_address: 172.18.4.3
 
 networks:
-  cofyboxnet:
+  hems:
     driver: bridge
     ipam:
      config:
