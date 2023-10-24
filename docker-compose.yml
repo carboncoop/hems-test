@@ -20,9 +20,11 @@ services:
       ACTIVITY_TIMEOUT: 120
 
   homeassistant:
-    build: ./services/homeassistant
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ./services/homeassistant
     ports:
-      - 80:8123
+      - 8123:8123
     privileged: true
     volumes:
       - 'hass-config:/config'
@@ -58,6 +60,17 @@ services:
     networks:
       hems:
         ipv4_address: 172.18.4.3
+
+  # nginx-reverse-proxy:
+  #   build:
+  #     dockerfile: ./Dockerfile
+  #     context: ./services/nginx-reverse-proxy
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     hems:
+  #       ipv4_address: 172.18.4.4
 
 networks:
   hems:
