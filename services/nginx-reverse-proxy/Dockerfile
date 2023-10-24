@@ -1,4 +1,4 @@
-ARG ARCH=arm32v7
+ARG ARCH=arm64v8
 
 FROM ${ARCH}/nginx:latest
 
@@ -13,4 +13,4 @@ COPY wait-for-it.sh .
 
 # Start the container
 EXPOSE 80
-CMD ["./wait-for-it.sh", "cofybox-config:8000", "-t", "0", "--", "nginx", "-g", "daemon off;"]
+# CMD ["./wait-for-it.sh", "localhost=:8123", "-t", "0", "--", "nginx", "-g", "daemon off;"]

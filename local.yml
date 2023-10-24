@@ -1,0 +1,5 @@
+services:
+  nginx-reverse-proxy:
+    build:
+      args:
+        ARCH: amd64

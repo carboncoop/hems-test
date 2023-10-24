@@ -4,6 +4,6 @@ COPY docker/start.sh /tmp/start.sh
 
 RUN chmod +x /tmp/start.sh
 
-COPY custom_components /config/custom_components
+COPY config /config
 
 CMD ["bash","/tmp/start.sh"]
