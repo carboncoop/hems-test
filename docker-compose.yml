@@ -78,6 +78,9 @@ services:
     privileged: true
     labels:
       io.balena.features.dbus: '1'
+    networks:
+      hems:
+        ipv4_address: 172.18.4.5
 
 networks:
   hems:
