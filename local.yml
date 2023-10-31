@@ -3,3 +3,7 @@ services:
     build:
       args:
         ARCH: amd64
+
+  wifi-repeater:
+    profiles:
+      - donotstart
