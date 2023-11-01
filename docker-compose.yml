@@ -82,6 +82,12 @@ services:
       hems:
         ipv4_address: 172.18.4.5
 
+  configurator:
+    build: ./services/configurator
+    privileged: true
+    network_mode: host
+    restart: on_failure
+
 networks:
   hems:
     driver: bridge
