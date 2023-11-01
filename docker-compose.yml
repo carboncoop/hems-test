@@ -82,6 +82,13 @@ services:
       hems:
         ipv4_address: 172.18.4.5
 
+  tcp-dump:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./services/tcpdump
+    restart: always
+    network_mode: "host"
+
 networks:
   hems:
     driver: bridge
