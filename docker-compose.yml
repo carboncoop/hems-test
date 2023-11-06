@@ -39,6 +39,9 @@ services:
       - 'hass-config:/hass-config'
     environment:
       - HC_BASEPATH=/hass-config
+    networks:
+      hems:
+        ipv4_address: 172.18.4.6
 
   influxdb:
     build: ./services/influxdb
@@ -64,6 +67,9 @@ services:
   wifi-repeater:
     image: bh.cr/gh_scott_hamilton/wifi-repeater-block
     privileged: true
+    # environment:
+    #   # AP_SSID: hems-${BALENA_DEVICE_UUID:0:4}
+    #   AP_PASSWORD: ${BALENA_DEVICE_NAME_AT_INIT}
     labels:
       io.balena.features.dbus: '1'
     networks:
