@@ -15,3 +15,16 @@ http:
   trusted_proxies:
     - 172.0.0.0/8
     - 127.0.0.1
+
+
+influxdb:       
+  api_version: 2
+  ssl: false      
+  host: 172.18.4.3
+  port: 8086
+  token: '<INFLUX_TOKEN>'
+  organization: hems
+  bucket: home_assistant
+  include:
+    domains:
+      - sensor
