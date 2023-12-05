@@ -29,6 +29,9 @@ services:
     restart: always
     volumes:
       - mosquitto:/mosquitto/data
+    networks:
+      hems:
+        ipv4_address: 172.18.4.7
 
   hass-configurator:
     image: "causticlab/hass-configurator-docker:latest"
