@@ -39,7 +39,7 @@ We should discuss our aspirations for these components post VPP. Should we begin
 # Configuration considerations
 
 * **Revisit HA configuration** - our current configuration.yaml is long and complex with a large number of work-arounds (mainly for non-persistant config issues which this rebasing would resolve), propose we start with minimal default and add in additions only where required. For example, removing 'name' and 'unit' settings from yaml, would open up UI based configuration of general settings (which is currently disabled). Other settings limit autodiscovery and adding of new devices to default dashboard. If required we can still set elements like 'name' fleet wide using app env variables.
-* **PowerShaper prep** - setting up the env variables to allow integration with PowerShaper - maybe worth revisiting [original hems config](https://gitlab.com/carboncoop/hems/-/blob/master/balena/balena-production.yml) to seperate out any COFYcloud complication. 
+* **PowerShaper prep** - setting up the env variables to allow integration with PowerShaper - maybe worth revisiting [original hems config](https://gitlab.com/carboncoop/hems/-/blob/main/balena/balena-production.yml) to seperate out any COFYcloud complication. 
 * **User seperation** - at present most users login with the same account as admin - resulting in logins which are hard to remember and making tracking of changes difficult. Instead we should have default admin accounts and also create specific user accounts. Suggest these new accounts be 'non-admin' and that sidebar access to HACS and ESPhome should be admin only.
 
 
