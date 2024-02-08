@@ -79,8 +79,8 @@ services:
       hems:
         ipv4_address: 172.18.4.5
 
-  configurator:
-    build: ./services/configurator
+  system-manager:
+    build: ./services/system-manager
     privileged: true
     network_mode: host
     restart: on_failure
