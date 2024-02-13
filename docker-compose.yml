@@ -4,6 +4,7 @@ volumes:
     hass-config:
     mosquitto:
     influxdb-data:
+    system-manager:
 
 services:
 
@@ -84,6 +85,8 @@ services:
     privileged: true
     network_mode: host
     restart: on_failure
+    labels:
+      io.balena.features.supervisor-api: '1'
 
 networks:
   hems:
