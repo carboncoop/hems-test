@@ -12,8 +12,9 @@ logging.basicConfig(
 
 
 def logToFile(message):
+    logging.info(message)
     logFile = open("/data/restartLog.txt", "a+")
-    logFile.write(str(datetime.now()) + ": " + message)
+    logFile.write(str(datetime.now()) + ": " + message + "\n")
     logFile.close()
 
 
@@ -53,7 +54,7 @@ def check_wifi_repeater_n_stop(wifi_started_at):
     return wifi_started_at
 
 
-def restart_hass():
+def restart_hass(version_changed_at):
     # Check version, if it's updated, restart home assistant
     try:
         response = requests.get(constants.APPICATION_URL)
@@ -73,6 +74,12 @@ def restart_hass():
     version_old = version_file.read()
     logging.debug("current version: " + version_old)
     if version and version_old != str(version):
+        if not version_changed_at:
+            version_changed_at = datetime.now()
+        
+        if datetime.now() - version_changed_at < timedelta(minutes=2):
+            logging.debug("Version changed not long ago. Don't restart")
+            return version_changed_at
         logging.debug("new version: " + str(version))
         #########################
         ## TODO: Log this in a file somewhere with timestamp
@@ -82,9 +89,13 @@ def restart_hass():
         version_file.seek(0)
         version_file.truncate()
         version_file.write(str(version))
-        logging.info("version updated from " + version_old + " to " + str(version) + ". Restarting homeassistant.")
         logToFile("version updated from " + version_old + " to " + str(version) + ". Restarting homeassistant.")
+    else:
+        version_changed_at = None
+
     version_file.close()
+
+    return version_changed_at
 
 
 def check_internet(last_seen):
@@ -92,16 +103,15 @@ def check_internet(last_seen):
 
     response = os.system("ping -c 1 google.com")
 
-    logging.debug("Current time " + str(datetime.now()) + " last seen google at " + str(last_seen))
+    logging.debug("Current time " + str(datetime.now()) + ". Last seen google at " + str(last_seen))
 
     if response == 0:
-        logging.debug(f"Internet up")
+        logging.debug("Internet up")
         last_seen = datetime.now()
     else:
-        logging.debug(f"Internet down!")
+        logging.debug("Internet down!")
 
         if datetime.now() - last_seen > timedelta(minutes=30):
-            logging.info("Gone past 30 minutes. Rebooting")
             response = requests.post(constants.REBOOT_URL, headers={"Content-Type": "application/json"})
             logging.debug(response.status_code)
             logging.debug(response.text)

@@ -18,6 +18,7 @@ logging.basicConfig(
 # Restart hass if updated
 # Ping internet and restart box if not responding for ~30 mins
 
+version_changed_at = None
 last_seen = datetime.now()
 wifi_started_at = None
 
@@ -27,7 +28,7 @@ while True:
 
     wifi_started_at = watchdog_utils.check_wifi_repeater_n_stop(wifi_started_at)
 
-    watchdog_utils.restart_hass()
+    version_changed_at = watchdog_utils.restart_hass(version_changed_at)
 
     last_seen = watchdog_utils.check_internet(last_seen)
 
