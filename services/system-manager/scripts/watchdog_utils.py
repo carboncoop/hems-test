@@ -70,30 +70,29 @@ def restart_hass(version_changed_at):
         except Exception:
             version = None
 
-    version_file = open("/data/version.txt", "r+")
-    version_old = version_file.read()
-    logging.debug("current version: " + version_old)
-    if version and version_old != str(version):
-        if not version_changed_at:
-            version_changed_at = datetime.now()
-        
-        if datetime.now() - version_changed_at < timedelta(minutes=2):
-            logging.debug("Version changed not long ago. Don't restart")
-            return version_changed_at
-        logging.debug("new version: " + str(version))
-        #########################
-        ## TODO: Log this in a file somewhere with timestamp
-        ## create persistent log function?
-        ##########################
-        response = requests.post(constants.RESTART_URL, data="{\"serviceName\": \"homeassistant\"}", headers={"Content-Type": "application/json"})
+    with open("/data/version.txt", "a+") as version_file:
         version_file.seek(0)
-        version_file.truncate()
-        version_file.write(str(version))
-        logToFile("version updated from " + version_old + " to " + str(version) + ". Restarting homeassistant.")
-    else:
-        version_changed_at = None
-
-    version_file.close()
+        version_old = version_file.read()
+        logging.debug("current version: " + version_old)
+        if version and version_old != str(version):
+            if not version_changed_at:
+                version_changed_at = datetime.now()
+            
+            if datetime.now() - version_changed_at < timedelta(minutes=2):
+                logging.debug("Version changed not long ago. Don't restart")
+                return version_changed_at
+            logging.debug("new version: " + str(version))
+            #########################
+            ## TODO: Log this in a file somewhere with timestamp
+            ## create persistent log function?
+            ##########################
+            response = requests.post(constants.RESTART_URL, data="{\"serviceName\": \"homeassistant\"}", headers={"Content-Type": "application/json"})
+            version_file.seek(0)
+            version_file.truncate()
+            version_file.write(str(version))
+            logToFile("version updated from " + version_old + " to " + str(version) + ". Restarting homeassistant.")
+        else:
+            version_changed_at = None
 
     return version_changed_at
 
