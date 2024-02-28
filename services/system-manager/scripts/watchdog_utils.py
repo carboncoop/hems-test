@@ -57,7 +57,7 @@ def check_wifi_repeater_n_stop(wifi_started_at):
 def restart_hass(version_changed_at):
     # Check version, if it's updated, restart home assistant
     try:
-        response = requests.get(constants.APPICATION_URL)
+        response = requests.get(constants.APPLICATION_URL)
         response.raise_for_status()
     except HTTPError as http_err:
         logging.error(f'HTTP error occurred: {http_err}')
@@ -111,9 +111,9 @@ def check_internet(last_seen):
         logging.debug("Internet down!")
 
         if datetime.now() - last_seen > timedelta(minutes=30):
+            logToFile("Unable to connect to the internet for 30 minutes. Restarting")
             response = requests.post(constants.REBOOT_URL, headers={"Content-Type": "application/json"})
             logging.debug(response.status_code)
             logging.debug(response.text)
-            logToFile("Unable to connect to the internet for 30 minutes. Restarting")
     
     return last_seen
