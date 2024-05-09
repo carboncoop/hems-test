@@ -20,4 +20,4 @@ data:
     - raspberrypi4-64
     - fincm3
     - beaglebone-black
-version: 0.0.4
+version: 24.5.0
