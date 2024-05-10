@@ -1,23 +1,14 @@
-name: Home Assistant
+name: HEMS 2.0
 description: >-
-  Open source home automation that puts local control and privacy first; a Home
-  Assistant, HASS Config, and MQTT stack.
+  A home energy management system based on Homeassistant and MQTT to monitor and control energy use within the home.
 type: sw.application
 assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/balena-io-experimental/balena-homeassistant'
-  logo:
-    type: blob.asset
-    data:
-      url: >-
-        https://raw.githubusercontent.com/balena-io-experimental/balena-homeassistant/master/logo.png
+      url: 'https://gitlab.com/carboncoop/balena-homeassistant'
 data:
-  defaultDeviceType: raspberrypi3
+  defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
-    - raspberrypi3
     - raspberrypi4-64
-    - fincm3
-    - beaglebone-black
 version: 24.5.0
