@@ -1,6 +1,17 @@
-# Refactoring our HEMS to better match upstream projects
+# Fully managed Home Energy Management System (HEMS)
 
-The current HEMS system developed as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity, in-line with our strategy day discussions.
+This system was designed and built by Carbon Co-op to provide energy communities with a secure and private in home device for data gathering and high-load device control. The project is primarily aimed at the following usecases: 
+
+* **Retrofit evaluation**
+Intro text
+
+
+* **Retrofit evaluation**
+
+ as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity, in-line with our strategy day discussions.
+
+# HEMS System, Services and functionality
+![Diagram showing each service running on the Balena OS and a description of its functionality.](https://cc-site-media.s3.amazonaws.com/uploads/2024/05/HEMS-services-diagram.png)
 
 # Home Assistant, Configurator and MQTT
 
