@@ -2,62 +2,54 @@
 
 This system was designed and built by Carbon Co-op to provide energy communities with a secure and private in home device for data gathering and high-load device control. The project is primarily aimed at the following usecases: 
 
-* **Retrofit evaluation**
-Intro text
+* **Building performance/retrofit evaluation**
+While smart meter data is useful, the addition of local sensor data allows for the seperation of the impact of fabric, HVAC and control measures and account for changes in user behaviour, solar generation and electric vehicles charging. It also provides early notice of issues with handover and alerts to any unintended consequences (such as reduced ventilation rates). A fully managed HEMS allows us to provide monitoring to meet all householder or project requirements, even with non-techical householders via fleet deployment and remote support.
 
 
-* **Retrofit evaluation**
-
- as part of OpenADR and later REScoop VPP was first scoped over 3 years ago, in which time there have been significant changes in the upstream projects, most notably in Home Assistant, Influx and Balena itself. Many of the additional services we developed are now included in core or in core and custom integrations. This is an attempt to realign the HEMS with the various upstream components and strip out some of the complexity, in-line with our strategy day discussions.
+* **Demand Side Flexiblity**
+The HEMS forms the endpoint for our community demand flexiblity schemes, such as our [PowerShaper Flex service](https://flex.powershaper.io/), turning high load domestic devices up and down in order to respond to needs of a renewable power grid.
 
 # HEMS System, Services and functionality
 ![Diagram showing each service running on the Balena OS and a description of its functionality.](https://cc-site-media.s3.amazonaws.com/uploads/2024/05/HEMS-services-diagram.png)
 
-# Home Assistant, Configurator and MQTT
 
-This repo is currently a clone of the excellent [Balena-homeassistant](https://github.com/balena-io-experimental/balena-homeassistant) project which is what we are using for the Area Based Scheme test system and seems a good base to start from. It is working well as is but is lacking some key functionality we have in the current COFYbox. Below are the included services.
+## Software setup
 
-* [**Home Assistant**](https://www.home-assistant.io/) tracks the latest release, the /config directory is configured as a persistent volume.
-* **Configurator** - mirrors the existing setup on our current HEMS (though without the now redundant link to the glue config) - need to add security (lacking in current COFYbox) - via [Environment variables]([environment variable](https://www.balena.io/docs/learn/manage/variables/)) see: https://github.com/danielperna84/hass-configurator/wiki/Configuration
-* **MQTT** - As current HEMS
+Running this project is as simple as deploying it to a balenaCloud application, then downloading the OS image from the dashboard and flashing your SD card.
 
-# Missing services from existing HEMS
+[![](https://balena.io/deploy.png)](https://dashboard.balena-cloud.com/deploy)
 
-* **InfluxDB** - we'd like to move from our current 1.8 setup to 2.0+. Very interested in the edge replication functionality to influxcloud, which brings the advantage of automated gathering of device load information, feed loss tracking and local caching (for later replication). There are again some interesting examples of this on balena hub which we might use a basis - for example [balenaAir](https://github.com/balenair/balenair), which benefits from webinars and walkthroughs from influx & balena. This would remove the need for us to run Telegraf.
-* **COFYbox config** - there are a variety of tasks fulfilled by this application, the primary is the creation of an access point for device connection - this can now be acheived via [balena Wifi-Repeater](https://github.com/balena-labs-projects/wifi-repeater), as yet it's unclear if all the additional functions can be dealt with via edge replication.
-* **Glue** - retired in favour of packaging system and custom integration.
-* **cofycloud-api-pull** - Likely that COFYcloud won't be available after project end - retired in favour of more granular OpenADR signals.
+We recommend this button as the de-facto method for deploying new apps on balenaCloud, especially if you are just getting started or want to test out the project. However, if you want to modify the docker-compose or tinker with the code, you'll need to clone this repo and use the [balenaCLI](https://github.com/balena-io/balena-cli) to push to your devices. This can be done later if you initially deploy using the button above. [Read more](https://www.balena.io/docs/learn/deploy/deployment/).
+
+### First login
+To access your new Home Assistant instance, browse to the IP address of your device. You can find the device's IP address in your balenaCloud dashboard. Go through the Home Assistant setup process and establish a username and password. To obtain a secure public URL for your Home Assistant instance, simply click the "Public Device URL" switch on your balenaCloud dashboard. You'll then see a link to access your unique device URL.
+
+## File Locations
+
+The project's docker-compose file creates a persistent volume on your disk/SD card for storing Home Assistant configuration files. These are located in the `/config` folder.
+
+## Configuring Home Assistant
+A text editor called Hass-Configurator is available locally on port 3218. (To access this: http://%your-ip-address%:3218 - Using this editor, you can make changes to the Home Assistant configuration file `configuration.yaml` which is the in the default folder `hass-config` for Hass-Configurator. (`hass-config` is mapped to `/config`)
+
+# Home Assistant and supporting containers.
+
+* [**Home Assistant**](https://www.home-assistant.io/) tracks the final version of the previous months release for stablity.
+* **MQTT** - Mosquitto broker.
+* [**InfluxDB**](https://www.influxdata.com/) is a comprehensive time-series database. We are using the 2.x branch in order to utilise the edge replication functionality to influxcloud, which brings the advantage of automated gathering of device load information, feed loss tracking and local caching (for later replication). 
 * **Telegraf** - Potentially retired in favour of edge replication for aggregation.
-* **NGINX reverse proxy** - ?
+* **NGINX reverse proxy** -
 
-# Additional services for discussion
-
-* **Grafana** - very standard companion graphing application for influx - on present COFYbox while all data is stored locally on the box, there is no way for the end user to access that data never mind visualise it. It maybe that grafana is too much for casual users and we should look at how we can enable HA to access and visualise historic data? 
-* **ESPHome** - simple interface to setup, configure & control ESP8266/ESP32 based devices. Very well integrated into Home Assistant, could be worthy of exploration? [see example docker compose](https://github.com/klutchell/balena-homeassistant/blob/main/docker-compose.yml).
 
 # Managing Community Custom Components
 
 * **Community components** - The Home Assistant Community Store provides much simpler installation and most importantly management of updates for custom components. Moving away from fleet wide deployment of custom components will free us up in terms of what devices we can support. We have already installed HACS on the ABS test fleet boxes and it's working very well.
 
-# PowerShaper Custom Components
-
-* **[PowerShaper](https://gitlab.com/rescoopvpp/cofybox-balena/-/tree/main/services/homeassistant/custom_components/powershaper?ref_type=heads)** - Our most crucial element as it's the basis of our PowerShaper service. 1st priority.
-* **[PowerShaper Monitor](https://gitlab.com/carboncoop/powershaper-monitor-hass/-/tree/9618d0c4c4fadd57487b63c343d3166208b1f93d)** - 3rd priority
-* **[Cofybox Packages](https://gitlab.com/rescoopvpp/cofybox-balena/-/tree/main/services/homeassistant/custom_components/cofybox_packages?ref_type=heads)** - 2nd priority
-
-We should discuss our aspirations for these components post VPP. Should we begin the process of getting them on HACS and eventually into core HA?
 
 # Configuration considerations
 
-* **Revisit HA configuration** - our current configuration.yaml is long and complex with a large number of work-arounds (mainly for non-persistant config issues which this rebasing would resolve), propose we start with minimal default and add in additions only where required. For example, removing 'name' and 'unit' settings from yaml, would open up UI based configuration of general settings (which is currently disabled). Other settings limit autodiscovery and adding of new devices to default dashboard. If required we can still set elements like 'name' fleet wide using app env variables.
-* **PowerShaper prep** - setting up the env variables to allow integration with PowerShaper - maybe worth revisiting [original hems config](https://gitlab.com/carboncoop/hems/-/blob/main/balena/balena-production.yml) to seperate out any COFYcloud complication. 
-* **User seperation** - at present most users login with the same account as admin - resulting in logins which are hard to remember and making tracking of changes difficult. Instead we should have default admin accounts and also create specific user accounts. Suggest these new accounts be 'non-admin' and that sidebar access to HACS and ESPhome should be admin only.
-
-
-
 ## Hardware required
 
-* Raspberry Pi 3B (current fleet) or Raspberry Pi 4B - 2GB (replacement for new boxes)
+* Raspberry Pi 4B - 2GB or more
 * 64GB Micro-SD Card (with wear levelling)
 * Power supply and cable
 * Optional: For connecting Zigbee devices - [SONOFF 3.0 dongle plus](https://sonoff.tech/product/gateway-and-sensors/sonoff-zigbee-3-0-usb-dongle-plus-e/) or [HA Skyconnect](https://www.home-assistant.io/skyconnect/) - for future MATTER compatibility (note: multi-protocol support is only available currently in HA OS version).
