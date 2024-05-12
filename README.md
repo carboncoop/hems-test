@@ -7,7 +7,7 @@ While smart meter data is useful, the addition of local sensor data allows for t
 
 
 * **Demand Side Flexiblity**
-The HEMS forms the endpoint for our community demand flexiblity schemes, such as our [PowerShaper Flex service](https://flex.powershaper.io/), turning high load domestic devices up and down in order to respond to needs of a renewable power grid.
+The HEMS forms the endpoint for community 'demand side response' schemes, such as our [PowerShaper Flex service](https://flex.powershaper.io/), turning high load domestic devices up and down in order to respond to needs of a renewable rich power grid.
 
 # HEMS System, Services and functionality
 ![Diagram showing each service running on the Balena OS and a description of its functionality.](https://cc-site-media.s3.amazonaws.com/uploads/2024/05/HEMS-services-diagram.png)
