@@ -9,6 +9,8 @@ While smart meter data is useful, the addition of local sensor data allows for t
 * **Demand Side Flexiblity**
 The HEMS forms the endpoint for community 'demand side response' schemes, such as our [PowerShaper Flex service](https://flex.powershaper.io/), turning high load domestic devices up and down in order to respond to needs of a renewable rich power grid.
 
+This version of the HEMS has been built from experience of previous systems. In particular the original [HEMS](https://gitlab.com/carboncoop/hems) developed by Carbon Co-op, the [Cofybox](https://gitlab.com/rescoopvpp/open-cofybox) developed by Carbon Co-op alongside other REScoop co-ops during the VPP project and also taking inspiration from the Balena labs [Home Assistant](https://github.com/balena-io-experimental/balena-homeassistant) project.
+
 # HEMS System, Services and functionality
 ![Diagram showing each service running on the Balena OS and a description of its functionality.](https://cc-site-media.s3.amazonaws.com/uploads/2024/05/HEMS-services-diagram.png)
 
@@ -22,27 +24,44 @@ Running this project is as simple as deploying it to a balenaCloud application, 
 We recommend this button as the de-facto method for deploying new apps on balenaCloud, especially if you are just getting started or want to test out the project. However, if you want to modify the docker-compose or tinker with the code, you'll need to clone this repo and use the [balenaCLI](https://github.com/balena-io/balena-cli) to push to your devices. This can be done later if you initially deploy using the button above. [Read more](https://www.balena.io/docs/learn/deploy/deployment/).
 
 ### First login
-To access your new Home Assistant instance, browse to the IP address of your device (which you can find on your balenaCloud dashboard). Go through the Home Assistant setup process and establish a username and password. To obtain a secure public URL for your Home Assistant instance, simply click the "Public Device URL" switch on your balenaCloud dashboard. You'll then see a link to access your unique device URL.
+To access your new Home Assistant instance, ensure you are on the same network as the device and browse to the IP address of your device (which you can find on your balenaCloud dashboard). Go through the Home Assistant setup process and establish a username and password. To obtain a secure public URL for your Home Assistant instance, simply click the "Public Device URL" switch on your balenaCloud dashboard. You'll then see a link to access your unique device URL.
 
 ## File Locations
 
-The project's docker-compose file creates a persistent volume on your disk/SD card for storing Home Assistant configuration files. These are located in the `/config` folder.
+The project's docker-compose file creates persistent volumes on your disk/SD card for storing configuration and data. In particular, the entire Home Assistant configuration is persistently stored in a volume mapped to location `/config`.
 
 ## Configuring Home Assistant
-Generally we recommend UI configuration from the Home Assistant standard UI, but if you have particular requirements that mean you need to edit yaml files a text editor called Hass-Configurator is available locally on port 3218. (To access this go to http://%your-ip-address%:3218 - Using this editor, you can make changes to the Home Assistant configuration file `configuration.yaml` which is the in the default folder `hass-config` for Hass-Configurator. (`hass-config` is mapped to `/config`)
+Generally we recommend UI configuration from the Home Assistant standard UI, but if you have particular requirements that mean you need to edit yaml files a text editor called Hass-Configurator is available locally on port 3218. (To access this while on the same network as your device go to http://%your-ip-address%:3218). Using this editor, you can make changes to the Home Assistant configuration file `configuration.yaml` which is the in the default folder `hass-config` for Hass-Configurator. (`hass-config` is mapped to `/config`)
+
+In order to access the configurator remotely, navigate to `https://<BALENA_URL>/configurator`. Note that this page is password protected. In order to set the user and password, create Balena variables `CONFIG_USER` AND `CONFIG_PASSWORD`.
 
 # Home Assistant and supporting containers.
 
-* [**Home Assistant**](https://www.home-assistant.io/) tracks the final version of the previous months release for stablity.
-* **MQTT** - Mosquitto broker.
-* [**InfluxDB**](https://www.influxdata.com/) is a comprehensive time-series database. We are using the 2.x branch in order to utilise the edge replication functionality to influxcloud, which brings the advantage of automated gathering of device load information, feed loss tracking and local caching (for later replication). 
-* [**WiFi repeater**](https://github.com/balena-labs-projects/wifi-repeater) a balena labs project to add a wifi access point to balena installations.
-* [**NGINX reverse proxy**](https://www.nginx.com/) 
-
+* [**Home Assistant**](https://www.home-assistant.io/) - tracks the final version of the previous months release for stablity.
+* [**MQTT**](https://mosquitto.org/) - Mosquitto MQTT broker.
+* [**InfluxDB**](https://www.influxdata.com/) - a comprehensive time-series database. We are using the 2.x branch in order to utilise the edge replication functionality to influxcloud, which brings the advantage of automated gathering of device load information, feed loss tracking and local caching (for later replication). 
+* [**WiFi repeater**](https://github.com/balena-labs-projects/wifi-repeater) - a balena labs project to add a wifi access point to balena installations.
+* [**NGINX reverse proxy**](https://www.nginx.com/) - responsible for routing traffic when connecting remotely
+* [**Hass configurator**](https://github.com/danielperna84/hass-configurator) - a tool for editing Home Assistant configuration
+* [**Wifi pepeater**](https://github.com/balena-labs-projects/wifi-repeater) - a tool for creating a wifi hotspot for device to connect to
+* [**System manager**](https://gitlab.com/carboncoop/hems-2/-/tree/main/services/system-manager?ref_type=heads) - a container to handle system configuration and monitoring
 
 # Managing Community Custom Components
 
-* **Community components** - The Home Assistant Community Store provides much simpler installation and most importantly management of updates for custom components. Moving away from fleet wide deployment of custom components will free us up in terms of what devices we can support. We have already installed HACS on the ABS test fleet boxes and it's working very well.
+* **Community components** - The Home Assistant Community Store comes pre-installed on the HEMS 2 and provides much simpler installation and most importantly management of updates for custom components. Moving away from fleet wide deployment of custom components will free us up in terms of what devices we can support. We have already installed HACS on the ABS test fleet boxes and it's working very well.
+
+# Wifi hotspot
+
+The Wifi Repeater service sets up a wireless access point on the device when it boots. This can be used to connect devices in the home to the HEMS without relying on the home network. Note, this hotspot comes with default credentials
+
+| Env var | Description | Default |
+| ------------- | ------------- | ------------- |
+| AP_SSID | Access point network name. | `WiFi Repeater` |
+| AP_PASSWORD | Access point network password. | `charlietheunicorn` |
+
+and should be considered insecure in this state.
+
+To change these credentials, set the environment variables `AP_SSID` and `AP_PASSWORD` in your Balena configuration.
 
 
 # Configuration considerations
