@@ -11,4 +11,4 @@ data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
     - raspberrypi4-64
-version: 24.7.0
+version: 24.8.0
