@@ -22,7 +22,7 @@ influxdb:
   ssl: false      
   host: 172.18.4.3
   port: 8086
-  token: '<INFLUX_TOKEN>'
+  token: !env_var INFLUX_TOKEN
   organization: hems
   bucket: home_assistant
   include:
