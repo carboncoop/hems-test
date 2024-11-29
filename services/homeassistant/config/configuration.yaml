@@ -30,3 +30,6 @@ influxdb:
       - sensor
 
 template: !include_dir_merge_list template_sensors/
+
+shell_command:
+  purge_backups: "/bin/bash /config/scripts/purge_backups.sh"

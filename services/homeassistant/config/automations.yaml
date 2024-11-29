@@ -1,1 +1,14 @@
-[]
+- alias: "Backup Home Assistant every night"
+  triggers:
+    - trigger: time
+      at: "01:12:00"
+  actions:
+    - alias: "Create backup now"
+      action: backup.create
+
+- alias: "Purge old backups"
+  triggers:
+    - trigger: time
+      at: "02:12:00"
+  action:
+    - service: shell_command.purge_backups
