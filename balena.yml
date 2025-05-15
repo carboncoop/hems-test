@@ -6,9 +6,10 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://gitlab.com/carboncoop/balena-homeassistant'
+      url: 'https://gitlab.com/carboncoop/hems-2'
 data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
     - raspberrypi4-64
+    - raspberrypi5
 version: 25.4.0
