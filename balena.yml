@@ -1,6 +1,6 @@
 name: HEMS 2.0
 description: >-
-  A home energy management system based on Homeassistant and MQTT to monitor and control energy use within the home.
+  A home energy management system based on Homeassistant, MQTT & Influx to monitor and control energy use within the home.
 type: sw.application
 assets:
   repository:
